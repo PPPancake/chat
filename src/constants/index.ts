@@ -20,7 +20,7 @@ export enum ViewKey {
   Chat = 'CHAT',
 }
 
-// tauri commands
+// tauri 命令
 export enum TauriCommand {
   SystemReadConfig = 'read_config',
   SystemWriteConfig = 'write_config',
@@ -31,6 +31,7 @@ export enum TauriCommand {
   SessionDelete = 'delete_session',
 }
 
+// 角色
 export enum Role {
   Robot = 'robot',
   System = 'system',
@@ -38,6 +39,7 @@ export enum Role {
   Assistant = 'assistant',
 }
 
+// gpt模型
 export enum Model {
   GPT_35_TURBO = 'gpt-3.5-turbo',
   GPT_35_TURBO_0301 = 'gpt-3.5-turbo-0301',
@@ -48,7 +50,7 @@ export enum Model {
 }
 
 // 默认代理
-export const DEFAULT_HOST = 'https://api.openai.com';
+export const DEFAULT_HOST = 'https://api.openai-proxy.com';
 
 // 头像
 export enum AssistantAvatars {
