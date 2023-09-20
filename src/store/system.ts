@@ -38,8 +38,7 @@ export const useSystemStore = defineStore('system', () => {
   watch(() => config.locale, () => locale.value = config.locale, {
     immediate: true,
   });
-  
-  // 监听配置变化
+
   watch(() => config, () => {
     invoke(TauriCommand.SystemWriteConfig, {
       config: JSON.stringify(config, null, 2),

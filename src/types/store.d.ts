@@ -5,9 +5,9 @@
 declare namespace AppSystem {
   interface IConfig {
     openaiAPIKey: string,
-    locale: import('@/constants').Language,
-    theme: import('@/constants').Theme,
-    model: import('@/constants').Model,
+    locale: import('../constants').Language,
+    theme: import('../constants').Theme,
+    model: import('../constants').Model,
     host: string,
     fontSize: number,
   }
@@ -21,13 +21,13 @@ declare namespace ChatSession {
     latest: number,
     messages: IMessage[],
     stickyOnTop?: boolean,
-    assistantAvatar?: import('@/constants').AssistantAvatars,
+    assistantAvatar?: import('../constants').AssistantAvatars,
   }
 
   interface IMessage {
     id: string,
-    role: import('@/constants').Role,
-    model?: import('@/constants').Model,
+    role: import('../constants').Role,
+    model?: import('../constants').Model,
     created: number,
     content: string,
     generating?: boolean,

@@ -1,5 +1,5 @@
 /**
- * 生成provide key通用函数
+ * 生成symbol类型的provide key
  * @param module 模块名称
  * @returns func
  */

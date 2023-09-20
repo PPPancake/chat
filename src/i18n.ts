@@ -25,12 +25,12 @@ const dateTimeFormats: DefineDateTimeFormat = {
 };
 
 export const i18n = createI18n({
-  legacy: false,
+  legacy: false, // 禁用vue2风格配置，使用vue3风格的配置
   datetimeFormats: {
     en: dateTimeFormats,
     'zh-CN': dateTimeFormats,
   },
-  locale: Language.EN,
+  locale: Language.ZH_CN, // 默认语言环境
   messages: {
     en,
     'zh-CN': zhCN,
