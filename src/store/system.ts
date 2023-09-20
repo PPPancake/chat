@@ -31,7 +31,7 @@ export const useSystemStore = defineStore('system', () => {
     root?.classList.add(await takeThemeValue(theme));
   };
 
-  // 监听主题更新
+  // 监听主题更新, 初始化时立即调用
   watch(() => config.theme, () => handleChangeTheme(config.theme), { immediate: true });
 
   // 监听语言变更
@@ -43,15 +43,16 @@ export const useSystemStore = defineStore('system', () => {
     invoke(TauriCommand.SystemWriteConfig, {
       config: JSON.stringify(config, null, 2),
     });
-  }, { deep: true });
+  }, { deep: true }); // 深度监视：监视对象内部的属性变化
 
-  // 监听系统主题变更
+  // 监听(等待)系统主题变更，这个事件是由tauri桌面应用程序框架派发的
   appWindow.onThemeChanged(({ payload }) => {
     if (config.theme === Theme.Auto) {
       handleChangeTheme(payload as Theme);
     }
   });
 
+  // 主动获取平台信息（操作系统、设备类型等），通过tauri来调用
   getPlatform().then(value => {
     document.querySelector('html')?.classList.add(value);
     platform.value = value;
@@ -64,15 +65,15 @@ export const useSystemStore = defineStore('system', () => {
   };
 });
 
-// 设置语言
+// 初始化设置语言
 const takeLocale = (locale: string): Language => {
   if (Object.values(Language).includes(locale as Language)) {
     return locale as Language;
   }
-  return Language.EN;
+  return Language.ZH_CN;
 };
 
-// 设置主题
+// 初始化设置主题
 const takeTheme = (theme: string | Theme) => {
   if (Object.values(Theme).includes(theme as Theme)) {
     return theme as Theme;
