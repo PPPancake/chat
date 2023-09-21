@@ -1,5 +1,4 @@
 <template>
-  聊天界面
   <div class="container" style="flex: 1 1 auto;width: 0;">
     <empty v-if="!session" />
     <div
@@ -21,16 +20,15 @@
 import { ref, computed, provide, watch, nextTick } from 'vue';
 import { v4 } from 'uuid';
 import { useI18n } from 'vue-i18n';
-import { useSessionStore, useSystemStore } from '../../../store';
-import { completion, IOnTextCallbackResult } from '../../../client';
-import { Role } from '../../../constants';
-import { namePrompts } from '../../../prompts';
-import { SESSION_SYMBOL, AUTO_SCROLL_TO_BOTTOM } from '../symbol';
+import { useSessionStore, useSystemStore } from '@/store';
+import { completion, IOnTextCallbackResult } from '@/client';
+import { Role } from '@/constants';
+import { namePrompts } from '@/prompts';
 import Empty from './empty.vue';
 import Toolbar from './toolbar.vue';
 import Message from './message.vue';
 import Sender from './sender.vue';
-
+import { SESSION_SYMBOL, AUTO_SCROLL_TO_BOTTOM } from '../symbol';
 
 const sessionStore = useSessionStore();
 const systemStore = useSystemStore();

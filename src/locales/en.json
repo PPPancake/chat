@@ -8,6 +8,7 @@
   "Dark Mode": "Dark Mode",
   "Settings": "Settings",
   "Font Size": "Font Size",
+  "Language": "Language",
   "[Enter] send, [Shift+Enter] line break, [Ctrl+Enter] send without generating": "[Enter] send, [Shift+Enter] line break, [Ctrl+Enter] send without generating",
   "copied to clipboard": "copied to clipboard",
   "An error occurred, please retry": "An error occurred, please retry",
@@ -20,5 +21,6 @@
   "Sticky on Top": "Sticky on Top",
   "Unsticky": "Unsticky",
   "Rename": "Rename",
-  "Change Avatar": "Change Avatar"
+  "Change Avatar": "Change Avatar",
+  "Search": "Search"
 }

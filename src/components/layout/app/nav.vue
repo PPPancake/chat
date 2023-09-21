@@ -10,31 +10,36 @@
         class="menu d-inline-block w-full ta-c"
         :to="{ name: ViewKey.Chat }"
       >
-        <!-- todo -->
-        <chat-round />
+        <chat-round-filled v-if="isActive(ViewKey.Chat)" />
+        <chat-round v-else />
       </router-link>
     </div>
 
     <div class="settings">
       <i
         class="menu d-inline-block w-full ta-c"
-        @click="settingsVisible = !settingsVisible"
+        @click="settingsVisible = !settingsVisible; console.log(settingsVisible)"
       >
         <operation />
       </i>
     </div>
   </div>
-
-  <!-- <settings-dialog /> -->
- 
+  <settings-dialog />
 </template>
 
 <script lang="ts" setup>
 import { ref, provide } from 'vue';
+import { useRoute } from 'vue-router';
 import { ViewKey } from '../../../constants';
 import { ChatRound, Operation } from '@element-plus/icons-vue';
+import ChatRoundFilled from '../../../assets/chat-round-filled.svg?skipsvgo';
 import { SETTINGS_VISIBLE } from './symbol';
-// import SettingsDialog from './settings-dialog.vue';
+import SettingsDialog from './settings-dialog.vue';
+
+const route = useRoute();
+
+console.log(route.name);
+const isActive = (viewKey: ViewKey) => route.name === viewKey;
 
 const settingsVisible = ref(false);
 provide(SETTINGS_VISIBLE, settingsVisible);
@@ -44,7 +49,7 @@ provide(SETTINGS_VISIBLE, settingsVisible);
 <style lang="less" scoped>
 .toolbar {
   flex: 0 0 66px;
-  padding: 45px 15px 15px 15px;
+  padding: 25px 15px 15px 15px;
   background-color: var(--app-nav-bg-color);
 
   .logo {

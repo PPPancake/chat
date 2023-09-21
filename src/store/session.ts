@@ -57,6 +57,7 @@ export const useSessionStore = defineStore('session', () => {
       messages: [],
     };
     sessions.value.unshift(newSession);
+    sortSession();
     active.value = newSession.id;
     invoke(TauriCommand.SessionWriteData, {
       id: newSession.id,

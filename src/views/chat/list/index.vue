@@ -1,65 +1,148 @@
 <template>
   <section class="container h-full d-flex flex-column">
-    会话列表
+    <div data-tauri-drag-region class="pvert-12 phorz-12 toolbar d-flex">
+      <el-input
+        clearable
+        style="flex: 1 1;"
+        class="pr-6"
+        :placeholder="$t('Search')"
+        size="small"
+        v-model="searchKey"
+        :prefix-icon="Search"
+      />
+
+      <el-button
+        style="flex: 0 0 auto;"
+        class="phorz-6"
+        size="small"
+        :icon="Plus"
+        @click="store.createSession"
+      />
+    </div>
+
     <el-scrollbar class="ps-r" style="flex: 1 1 auto;">
       <ul>
-        <li v-for="item in sessions" :key = "item.id">
+        <li
+          v-for="item in sessions"
+          :key="item.id"
+        >
+          <!-- 监听open事件，触发函数 -->
           <context-menu @open="handleContextMenu(item.id)">
             <div
               class="session phorz-10 pvert-16 d-flex ps-r"
-              @click="console.log('click')"
+              :class="{
+                'sticky-top': item.stickyOnTop,
+                active: store.active === item.id,
+              }"
+              @click="store.switchSession(item.id)"
             >
               <avatar
-                class="avater"
+                class="avatar"
+                :avatar="item.assistantAvatar"
                 :size="36"
               />
               
               <div class="content pl-10 pr-6">
                 <p class="content-title ellipsis pr-30 pb-4">{{ item.name }}</p>
-                <p class="content-abstract ellipsis">{{ item.content }}</p>
+                <p class="content-abstract ellipsis">{{ renderAbstract(item) }}</p>
               </div>
               <div class="ps-a t-assist date">
-                {{ item.latest }}
+                {{ getChatDate(item.latest) }}
               </div>
-
-
             </div>
+
+            <template #menu>
+              <context-menu-item
+                v-if="item.stickyOnTop"
+                @click="handleSticky(item.id, false)"
+              >
+                {{ $t('Unsticky') }}
+              </context-menu-item>
+              <context-menu-item
+                v-else
+                @click="handleSticky(item.id, true)"
+              >
+                {{ $t('Sticky on Top') }}
+              </context-menu-item>
+              <context-menu-item @click="handleRename()">
+                {{ $t('Rename') }}
+              </context-menu-item>
+              <context-menu-item @click="handleChangeAvatar()">
+                {{ $t('Change Avatar') }}
+              </context-menu-item>
+              <el-divider class="mvert-4" />
+              <context-menu-item @click="handleDelete(item.id)">
+                {{ $t('Delete') }}
+              </context-menu-item>
+            </template>
           </context-menu>
         </li>
       </ul>
     </el-scrollbar>
   </section>
+
+  <rename />
+  <change-avatar />
 </template>
 
 <script lang="ts" setup>
-import { ref, provide } from 'vue';
-// import { useSessionStore } from '../../../store/session';
-import ContextMenu from '../../../components/context-menu/index.vue';
-import { CONTEXT_ID } from '../symbol';
-import Avatar from './avater.vue';
+import { ref, computed, provide } from 'vue';
+import { Search, Plus } from '@element-plus/icons-vue';
+import { useSessionStore } from '@/store/session';
+import { getChatDate } from '@/utils';
+import ContextMenu from '@/components/context-menu/index.vue';
+import ContextMenuItem from '@/components/context-menu/menu-item.vue';
+import Rename from './rename.vue';
+import ChangeAvatar from './change-avatar.vue'
+import Avatar from '../avatar.vue';
+import { RENAME_VISIBLE, CONTEXT_ID, CHANGE_AVATAR_VISIBLE } from '../symbol';
+
+const store = useSessionStore();
+// 目前只简单检索标题
+const searchKey = ref('');
+const renameVisible = ref(false);
+const changeAvatarVisible = ref(false);
 const contextId = ref('');
+provide(RENAME_VISIBLE, renameVisible);
 provide(CONTEXT_ID, contextId);
+provide(CHANGE_AVATAR_VISIBLE, changeAvatarVisible);
 
-// const store = useSessionStore();
-const sessions = [{
-  'id':'1',
-  'name': 'name1',
-  'content': '内容1',
-  'latest': '2022/10/1'
-}, {
-  'id':'2',
-  'name': 'name2',
-  'content': '内容2',
-  'latest': '2022/10/1'
-},
-{
-  'id':'3',
-  'name': 'name3',
-  'content': '内容3',
-  'latest': '2022/10/1'
-}];
+// 会话列表
+const sessions = computed(() => { 
+  if (!searchKey.value) { // 默认显示
+    return store.sessions;
+  }
+  return store.sessions.filter(item => item.name // 搜索结果
+    .toLowerCase()
+    .includes(searchKey.value.toLowerCase()),
+  );
+});
 
-const handleContextMenu = (id: string) => console.log(id);
+// 摘要
+const renderAbstract = (session: ChatSession.ISession) => {
+  if (session.messages.length <= 0) { // 会话没有内容
+    return '';
+  }
+   // 摘要显示最后一次会话的内容
+  const message = session.messages[session.messages.length - 1];
+  return message.content;
+};
+
+const handleContextMenu = (id: string) => contextId.value = id;
+
+// 删除会话
+const handleDelete = (id: string) => store.deleteSession(id);
+
+// 置顶会话
+const handleSticky = (id: string, stickyOnTop: boolean) => store.updateSession(id, {
+  stickyOnTop,
+});
+
+// 显示重命名界面
+const handleRename = () => renameVisible.value = true;
+
+// 显示更改头像界面
+const handleChangeAvatar = () => changeAvatarVisible.value = true;
 
 </script>
 

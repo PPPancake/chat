@@ -8,6 +8,7 @@
   "Dark Mode": "暗黑模式",
   "Settings": "设置",
   "Font Size": "字体大小",
+  "Language": "语言",
   "[Enter] send, [Shift+Enter] line break, [Ctrl+Enter] send without generating": "[回车键] 发送，[Shift+回车键] 换行, [Ctrl+回车键] 发送但不生成",
   "copied to clipboard": "已复制到剪贴板",
   "An error occurred, please retry": "发生错误，请重试",
@@ -20,5 +21,6 @@
   "Sticky on Top": "置顶",
   "Unsticky": "取消置顶",
   "Rename": "重命名",
-  "Change Avatar": "更换头像"
+  "Change Avatar": "更换头像",
+  "Search": "搜索"
 }

@@ -57,7 +57,7 @@
                     fontSize: `${systemStore.config.fontSize}px`
                   }"
                   @click="handleClick"
-                />
+                ></div>
               </div>
             </div>
 
@@ -114,9 +114,9 @@ import {
   Delete,
 } from '@element-plus/icons-vue';
 import { useI18n } from 'vue-i18n';
-import { useSystemStore, useSessionStore } from '../../../store';
-import { renderMarkDown } from '../../../utils';
-import { Role } from '../../../constants';
+import { useSystemStore, useSessionStore } from '@/store';
+import { renderMarkDown } from '@/utils';
+import { Role } from '@/constants';
 import Avatar from '../avatar.vue';
 import { SESSION_SYMBOL, AUTO_SCROLL_TO_BOTTOM } from '../symbol';
 import MessageDate from './date.vue';
@@ -159,11 +159,12 @@ const handleClick = (e: MouseEvent) => {
 
 // 复制代码
 const handleCopyCode = (e: MouseEvent) => {
+  // 父元素没有'copy-action'类名，说明没有点击复制按钮
   if ((e.target as HTMLElement)?.parentElement?.className !== 'copy-action') {
     return;
   }
   const content = (e.target as HTMLElement).parentElement?.parentElement?.parentElement?.querySelector('code')?.innerText || '';
-  navigator.clipboard.writeText(content);
+  navigator.clipboard.writeText(content); // 复制到剪切板
   ElNotification({
     message: t('copied to clipboard'),
     showClose: false,
@@ -181,6 +182,7 @@ const handleCopyMessage = (content: string) => {
   });
 };
 
+// 删除消息
 const handleDeleteMessage = (index: number) => {
   emits('cancel');
   sessionStore.deleteMessage(index);
@@ -325,9 +327,6 @@ defineExpose({
     }
   }
 }
-</style>
-
-<style lang="less">
 .dark {
   .user-content {
     &::selection {

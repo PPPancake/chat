@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import dayjs from 'dayjs';
-import { isToday, isYesterday, isLatestWeek } from '../../../utils';
+import { isToday, isYesterday, isLatestWeek } from '@/utils';
 import { useI18n } from 'vue-i18n';
 
 const TIME_SPACE = 10 * 60 * 1000; // 十分钟间隔

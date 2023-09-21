@@ -11,7 +11,7 @@
 import { computed } from 'vue';
 import { AssistantAvatars } from '../../constants';
 
-const props = defineProps<{
+const props = defineProps<{ // 定义属性
   avatar?: AssistantAvatars,
   size: number,
 }>();
