@@ -11,6 +11,12 @@
     "version": "0.1.0"
   },
   "tauri": {
+    "updater": {
+      "active": true,
+      "dialog": true, 
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDgwNEYxNTkyNDQ0OEYxQzEKUldUQjhVaEVraFZQZ0NIdDl3dkdMMGpIVUY0MGJLVHVXRldWM1d1RXAxNTNkSUR6WUFoUVU2Z24K",
+      "endpoints": [""]
+    },
     "allowlist": {
       "all": true,
       "shell": {
