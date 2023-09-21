@@ -22,27 +22,28 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v3
+
+      - uses: actions/checkout@v3 # 检出代码仓库
 
       - name: Get version
         id: get_version
-        uses: battila7/get-version-action@v2
+        uses: battila7/get-version-action@v2 # 获取版本号
 
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3 # 设置nodejs版本为16
         with:
           node-version: 16
 
-      - name: install Rust stable
+      - name: install Rust stable # 安装rust的稳定版本
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Rust cache
+      - name: Rust cache # 缓存rust依赖，加快构建速度
         uses: swatinem/rust-cache@v2
         with:
           workspaces: './src-tauri -> target'
 
-
-      - name: install dependencies (ubuntu only)
+      # 安装依赖
+      - name: install dependencies (ubuntu only) 
         if: matrix.platform == 'ubuntu-20.04'
         run: |
           sudo apt-get update
@@ -53,14 +54,18 @@ jobs:
         run: |
           rustup target add aarch64-apple-darwin
 
+      # 缓存node_modules文件夹，加快后续的依赖安装速度
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-
+      
+      # 安装前端依赖
       - name: install frontend dependencies
         run: yarn install
+      
 
+      # 构建应用程序，并发布
       - name: Build Tauri App
         uses: tauri-apps/tauri-action@dev
         env:
@@ -68,8 +73,8 @@ jobs:
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
-          tagName: 1chat-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: '1chat v__VERSION__'
+          tagName: chat-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: 'chat v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           prerelease: false
